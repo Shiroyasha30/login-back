@@ -5,10 +5,8 @@ const cors = require('cors')
 const knex = require('knex')({
   client: 'pg',
   connection: {
-    host : '127.0.0.1',
-    user : 'postgres',
-    password : 'pswd',
-    database : 'db'
+    connectionString : process.env.DATABASE_URL,
+    ssl : true
   }
 });
 
@@ -94,7 +92,7 @@ app.post('/register', (req, res)=>{
 	.catch(err => {
 		res.json('errorr');
 	})
-	
+
 })
 
 // app.get('/profile/:id', (req, res)=>{
