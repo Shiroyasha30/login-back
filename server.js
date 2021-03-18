@@ -69,7 +69,7 @@ app.post('/register', (req, res)=>{
 	var hash = bcrypt.hashSync(pswd);
 
 
-	knex('login')
+	/*knex('login')
 	.returning('email')
 	.insert({
 		pswd: hash,
@@ -91,6 +91,31 @@ app.post('/register', (req, res)=>{
 	})
 	.catch(err => {
 		res.json('errorr');
+	})*/
+
+	knex.transaction(trx => {
+		trx.insert({
+			email: email,
+			pswd: hash
+		})
+		.into('login')
+		.returning('email')
+		.then(em => {
+			return trx('users')
+			.returning('*')
+			.insert({
+				name: name,
+				email: em[0],
+			})
+			.then(user => {
+				res.json(user[0]);
+			})
+		})
+		.then(trx.commit)
+		.catch(trx.rollback)
+	})
+	.catch(err => {
+		res.json('errorrr')
 	})
 
 })
