@@ -10,6 +10,12 @@ const knex = require('knex')({
   }
 });
 
+knex('users')
+.select('*')
+.then(res => {
+	console.log(res);
+})
+
 const app = express();
 
 app.use(bodyParser.json());
