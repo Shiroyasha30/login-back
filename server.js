@@ -10,11 +10,11 @@ const knex = require('knex')({
   }
 });
 
-knex('users')
+/*knex('users')
 .select('*')
 .then(res => {
 	console.log(res);
-})
+})*/
 
 const app = express();
 
@@ -22,7 +22,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res)=>{
-	res.send("--ROOT--")
+	knex.select('*').from('users')
+	.then(users => {
+		res.json(users)
+	})
 })
 
 app.post('/signin', (req, res)=>{
