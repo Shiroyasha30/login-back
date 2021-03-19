@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res)=>{
-	knex.select('*').from('users')
+	return knex.select('*').from('users')
 	.then(users => {
 		res.json(users)
 	})
